@@ -1,0 +1,90 @@
+name: Build
+on:
+  push:
+    branches:
+      - main
+      - dev
+      - feature/AndresAlcantara-2242517
+  pull_request:
+    types: [opened, synchronize, reopened]
+    branches:
+      - main
+      - dev
+jobs:
+  django-test:
+    name: Django Tests
+    runs-on: ubuntu-latest
+    services:
+      # Optional: Add database service if your Django project requires it
+      postgres:
+        image: postgres:14
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: test_db
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+    
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
+      
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+      
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+          pip install coverage
+      
+      - name: Run Django tests with coverage
+        run: |
+          mkdir -p coverage-reports
+          coverage run --source='.' manage.py test
+          coverage report
+          coverage xml -o coverage-reports/coverage-report.xml
+        env:
+          # Set your Django-specific environment variables here
+          DATABASE_URL: postgresql://postgres:postgres@localhost:5432/test_db
+          DJANGO_SETTINGS_MODULE: tienda.settings
+      
+      - name: Store coverage report
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-report
+          path: coverage-reports/coverage-report.xml
+          retention-days: 1
+
+  sonarqube:
+    name: SonarQube
+    runs-on: ubuntu-latest
+    needs: django-test
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
+      
+      - name: Download coverage report
+        uses: actions/download-artifact@v4
+        with:
+          name: coverage-report
+          path: coverage-reports
+      
+      - name: SonarQube Scan
+        uses: SonarSource/sonarqube-scan-action@v5
+        with:
+          args: >
+            -Dsonar.branch.name=${{github.ref_name}}
+            -Dsonar.verbose=true
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          
