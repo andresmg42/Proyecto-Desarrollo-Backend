@@ -99,10 +99,21 @@ IS_PRODUCTION = os.environ.get('PRODUCTION', False)
 
 
 if IS_PRODUCTION:
-    DATABASES = {
-        'default': dj_database_url.config(
-            default=os.environ.get("DATABASE_URL")
-        )
+    # DATABASES = {
+    #     'default': dj_database_url.config(
+    #         default=os.environ.get("DATABASE_URL")
+    #     )
+    # }
+
+    DATABASES={
+        'default':{
+            'ENGINE':'django.db.backends.postgresql',
+            'NAME':'proyectodb',
+            'USER':'user',
+            'PASSWORD':'123',
+            'HOST':'db',
+            'PORT':'5432'
+        }
     }
 else:
     # Local development database configuration (SQLite)

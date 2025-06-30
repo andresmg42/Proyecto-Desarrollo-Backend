@@ -1,0 +1,19 @@
+
+
+services:
+  api:
+    build: .
+    ports:
+      - "8000:8000"
+    volumes:
+    - .:/app
+    environment:
+    - DEBUG=True
+  db:
+    image: postgres
+    environment:
+      POSTGRES_DB: proyectodb
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: 123
+
+    
