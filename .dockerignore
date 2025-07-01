@@ -1,0 +1,11 @@
+.github
+.venv
+.gitignore
+coverage.xml
+db.sqlite3
+sonar-run.ps1
+sonar-project.properties
+**/__pycache__
+**/migrations
+Dockerfile
+Docker-compose.yml

@@ -106,15 +106,15 @@ if IS_PRODUCTION:
     # }
 
     DATABASES={
-        'default':{
-            'ENGINE':'django.db.backends.postgresql',
-            'NAME':'proyectodb',
-            'USER':'user',
-            'PASSWORD':'123',
-            'HOST':'db',
-            'PORT':'5432'
+            'default':{
+                'ENGINE':'django.db.backends.postgresql',
+                'NAME':'classmartdb',
+                'USER':'user',
+                'PASSWORD':'123',
+                'HOST':'postgres-service',
+                'PORT':'5432'
+            }
         }
-    }
 else:
     # Local development database configuration (SQLite)
     DATABASES = {
