@@ -9,3 +9,12 @@ sonar-project.properties
 **/migrations
 Dockerfile
 Docker-compose.yml
+destination-rule.yml
+django-deployment.yml
+django-service.yml
+migrations-job.yml
+postgres-deployment.yml
+postgres-secret.yml
+postgres-service.yml
+postgres-storage.yml
+virtual-service-10-percent.yml

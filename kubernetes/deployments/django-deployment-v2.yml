@@ -12,7 +12,7 @@ spec:
     metadata:
       labels:
         app: django-api
-        version: 2
+        version: v2
     spec:
       containers:
         - name: classmart-backend
