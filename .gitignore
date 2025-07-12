@@ -16,3 +16,6 @@ venv/*
 
 run-sonar.ps1
 sonar-run.ps1
+kubernetes
+
+kubernetes.zip
