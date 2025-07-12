@@ -96,14 +96,19 @@ WSGI_APPLICATION = "tienda.wsgi.application"
 
 IS_PRODUCTION = os.environ.get('PRODUCTION', False)
 
+IS_EKS=os.environ.get('IS_EKS',False)
+
 
 
 if IS_PRODUCTION:
-    # DATABASES = {
-    #     'default': dj_database_url.config(
-    #         default=os.environ.get("DATABASE_URL")
-    #     )
-    # }
+    
+    DATABASES = {
+        'default': dj_database_url.config(
+            default=os.environ.get("DATABASE_URL")
+        )
+    }
+
+elif IS_EKS:
 
     DATABASES={
             'default':{
@@ -115,6 +120,7 @@ if IS_PRODUCTION:
                 'PORT':'5432'
             }
         }
+
 else:
     # Local development database configuration (SQLite)
     DATABASES = {
