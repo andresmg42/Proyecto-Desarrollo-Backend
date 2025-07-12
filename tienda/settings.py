@@ -28,7 +28,7 @@ SECRET_KEY = os.environ.get("SECRET_KEY", default="your secret key")
 
 DEBUG = "RENDER" not in os.environ
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 RENDER_EXTERNAL_HOSTNAME = os.environ.get("RENDER_EXTERNAL_HOSTNAME")
 
@@ -96,14 +96,31 @@ WSGI_APPLICATION = "tienda.wsgi.application"
 
 IS_PRODUCTION = os.environ.get('PRODUCTION', False)
 
+IS_EKS=os.environ.get('IS_EKS',False)
+
 
 
 if IS_PRODUCTION:
+    
     DATABASES = {
         'default': dj_database_url.config(
             default=os.environ.get("DATABASE_URL")
         )
     }
+
+elif IS_EKS:
+
+    DATABASES={
+            'default':{
+                'ENGINE':'django.db.backends.postgresql',
+                'NAME':'classmartdb',
+                'USER':'user',
+                'PASSWORD':'123',
+                'HOST':'postgres-service',
+                'PORT':'5432'
+            }
+        }
+
 else:
     # Local development database configuration (SQLite)
     DATABASES = {
