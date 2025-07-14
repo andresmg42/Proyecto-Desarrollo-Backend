@@ -74,3 +74,9 @@ class URLRoutingAndViewTests(TestCase):
         self.assertEqual(resolve('/api/filter_products/').func, views.search_products)
         self.assertEqual(resolve('/api/search_users_products/').func, views.search_users_products)
         self.assertEqual(resolve('/api/delete_all_userProducts/').func, views.delete_all_user_products)
+
+    def test_delete_user_products_by_id(self):
+        res= self.client.delete(f'/api/delete_user_products_by_id/?user_id={self.user.id}&product_id={self.product.id}')
+        self.assertEqual(res.status_code,204)
+        self.assertEqual(ProductoUsuario.objects.filter(usuario=self.user,producto=self.product).count(),0)
+        

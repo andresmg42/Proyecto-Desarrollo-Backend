@@ -16,7 +16,8 @@ urlpatterns = [
     path("api/",include(router.urls)),
     path("api/filter_products/", views.search_products),
     path("api/search_users_products/", views.search_users_products),
-    path("api/delete_all_userProducts/",views.delete_all_user_products)
+    path("api/delete_all_userProducts/",views.delete_all_user_products),
+    path("api/delete_user_products_by_id/",views.delete_user_products_by_id)
     
     
 
