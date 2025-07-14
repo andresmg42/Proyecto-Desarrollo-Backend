@@ -135,5 +135,12 @@ def delete_all_user_products(request):
     num,dic=ProductoUsuario.objects.filter(usuario_id=id_user).delete()
     return Response({'nuemro de objetos eliminados':num},status=204)
     
-    
+@api_view(['DELETE'])
+def delete_user_products_by_id(request):
+    id_user=request.GET.get('user_id')
+    id_producto=request.GET.get('product_id')
+    if not id_user and not id_producto:
+        return Response({'error':'id_user y id_producto son requeridas'},status=400)
+    num,dic=ProductoUsuario.objects.filter(usuario_id=id_user,producto_id=id_producto).delete()
+    return Response({'numero de obajetos eliminados':num},status=204)
     
